@@ -15,6 +15,7 @@ class ListarCursos implements IRequestController{
     }
 
     public function processarRequisicao(): void {
+        $titulo = "Lista de cursos";
         $cursos = $this->repositorioDeCursos->findAll();
         //Escrever HTML
         require __DIR__ . '/../../view/cursos/listar-cursos.php';

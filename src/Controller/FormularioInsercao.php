@@ -2,11 +2,10 @@
 
 namespace Alura\Cursos\Controller;
 
-class FormularioInsercao implements IRequestController{
+class FormularioInsercao extends ControllerHTML implements IRequestController{
 
     public function processarRequisicao(): void {
-        $titulo = "Novo Curso";
-        require __DIR__ . '/../../view/cursos/novo-curso.php';
+        echo $this->getView('cursos/form-curso.php', ['titulo' => "Novo Curso"]);
     }
 
 }

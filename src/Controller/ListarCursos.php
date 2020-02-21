@@ -5,7 +5,7 @@ namespace Alura\Cursos\Controller;
 use Alura\Cursos\Entity\Curso;
 use Alura\Cursos\Infra\EntityManagerCreator;
 
-class ListarCursos implements IRequestController{
+class ListarCursos extends ControllerHTML implements IRequestController{
 
     private $repositoriDeCursos;
 
@@ -15,10 +15,12 @@ class ListarCursos implements IRequestController{
     }
 
     public function processarRequisicao(): void {
-        $titulo = "Lista de cursos";
-        $cursos = $this->repositorioDeCursos->findAll();
+        $data = [
+            'cursos' => $this->repositorioDeCursos->findAll(),
+            'titulo' => "Lista de cursos"
+        ];
         //Escrever HTML
-        require __DIR__ . '/../../view/cursos/listar-cursos.php';
+        echo $this->getView('cursos/listar-cursos.php', $data);
     }
 
 }

@@ -16,6 +16,8 @@ class ExcluirCurso implements IRequestController {
     public function processarRequisicao(): void {
         $id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
         if (is_null($id) || $id === false) {
+            $_SESSION['tipoMensagem'] = 'danger';
+            $_SESSION['mensagem'] = 'Curso inexistente';
             header("Location: /listar-cursos");
             return;
         }
@@ -23,6 +25,9 @@ class ExcluirCurso implements IRequestController {
         $curso = $this->entityManager->getReference(Curso::class, $id);
         $this->entityManager->remove($curso);
         $this->entityManager->flush();
+        
+        $_SESSION['tipoMensagem'] = 'success';
+        $_SESSION['mensagem'] = 'Curso removido com sucesso';
 
         header("Location: /listar-cursos");
     }

@@ -7,6 +7,8 @@ use Alura\Cursos\Entity\Usuario;
 
 class RealizarLogin implements IRequestController {
 
+    use \Alura\Cursos\Helper\FlashMessage;
+    
     private $repository;
 
     public function __construct() {
@@ -19,8 +21,7 @@ class RealizarLogin implements IRequestController {
         $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 
         if (is_null($email) || $email === false) {
-            $_SESSION['tipoMensagem'] = 'danger';
-            $_SESSION['mensagem'] = 'e-mail inválido!';
+            $this->setMessage('danger', 'e-mail inválido!');
             header("Location: /login");
             return;
         }
@@ -28,8 +29,7 @@ class RealizarLogin implements IRequestController {
         $usuario = $this->repository->findOneBy(['email' => $email]);
 
         if (is_null($usuario)) {
-            $_SESSION['tipoMensagem'] = 'danger';
-            $_SESSION['mensagem'] = 'usuário não encontrado';
+            $this->setMessage('danger', 'Usuário não encontrado');
             header("Location: /login");
             return;
         }
@@ -37,8 +37,7 @@ class RealizarLogin implements IRequestController {
         $senha = filter_input(INPUT_POST, 'senha', FILTER_SANITIZE_STRING);
 //        echo $senha . "<br>";
         if (!$usuario->senhaEstaCorreta($senha)) {
-            $_SESSION['tipoMensagem'] = 'danger';
-            $_SESSION['mensagem'] = 'Senha inválida';
+            $this->setMessage('danger', 'Senha inválida');
             header("Location: /login");
             return;
         }

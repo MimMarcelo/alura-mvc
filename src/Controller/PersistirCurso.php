@@ -7,6 +7,8 @@ use Alura\Cursos\Entity\Curso;
 
 class PersistirCurso implements IRequestController {
 
+    use \Alura\Cursos\Helper\FlashMessage;
+    
     private $entityManager;
 
     public function __construct() {
@@ -22,14 +24,13 @@ class PersistirCurso implements IRequestController {
         if (!is_null($id) && $id !== false) {
             $curso->setId($id);
             $this->entityManager->merge($curso);
-            $_SESSION['mensagem'] = 'Curso atualizado com sucesso';
+            $this->setMessage('success', 'Curso atualizado com sucesso');
         } else {
             $this->entityManager->persist($curso);
-            $_SESSION['mensagem'] = 'Curso cadastrado com sucesso';
+            $this->setMessage('success', 'Curso cadastrado com sucesso');
         }
         $this->entityManager->flush();
 
-        $_SESSION['tipoMensagem'] = 'success';
         header("Location: /listar-cursos", true, 302);
     }
 
